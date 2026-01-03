@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mon Journal Pro Trading</title>
+  <style>
+    :root{
+      --bg:#0b0f19; --card:#121a2a; --muted:#90a4c3; --text:#e8eefc;
+      --accent:#6ee7ff; --accent2:#a78bfa; --danger:#ff6b6b; --ok:#4ade80;
+      --border:rgba(255,255,255,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:radial-gradient(1000px 600px at 20% 0%, rgba(110,231,255,.12), transparent 55%),
+                 radial-gradient(900px 500px at 90% 10%, rgba(167,139,250,.12), transparent 60%),
+                 var(--bg);
+      color:var(--text);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background:rgba(11,15,25,.65);
+      border-bottom:1px solid var(--border);
+    }
+    .wrap{max-width:1100px; margin:0 auto; padding:16px}
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo{
+      width:40px;height:40px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 10px 30px rgba(110,231,255,.15);
+    }
+    h1{font-size:18px; margin:0}
+    .sub{color:var(--muted); font-size:12px; margin-top:2px}
+    nav{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    button.tab{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:.15s ease;
+      font-weight:600;
+    }
+    button.tab:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.16)}
+    button.tab.active{
+      border-color:rgba(110,231,255,.5);
+      background:rgba(110,231,255,.10);
+    }
+
+    main{padding:18px 0 40px}
+    .grid{display:grid; grid-template-columns: 1fr; gap:14px}
+    @media(min-width:900px){
+      .grid.cols-2{grid-template-columns: 1fr 1fr}
+      .grid.cols-3{grid-template-columns: 1fr 1fr 1fr}
+    }
+    .card{
+      border:1px solid var(--border);
+      background:rgba(18,26,42,.85);
+      border-radius:16px;
+      padding:14px;
+      box-shadow:0 18px 40px rgba(0,0,0,.25);
+    }
+    .card h2{margin:0 0 10px; font-size:15px}
+    .muted{color:var(--muted)}
+    .kpis{display:grid; gap:10px}
+    @media(min-width:900px){.kpis{grid-template-columns:repeat(4,1fr)}}
+    .kpi{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+    }
+    .kpi .label{font-size:12px; color:var(--muted)}
+    .kpi .value{font-size:20px; font-weight:800; margin-top:6px}
+
+    form{display:grid; gap:10px}
+    .row{display:grid; gap:10px}
+    @media(min-width:900px){.row{grid-template-columns:repeat(3,1fr)}}
+    label{font-size:12px; color:var(--muted); display:block; margin:0 0 6px}
+    input, select, textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:90px; resize:vertical}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .btn{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.15s ease;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.18)}
+    .btn.primary{border-color:rgba(110,231,255,.55); background:rgba(110,231,255,.12)}
+    .btn.danger{border-color:rgba(255,107,107,.55); background:rgba(255,107,107,.10)}
+    .hint{font-size:12px; color:var(--muted)}
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      font-size:12px; color:var(--muted);
+    }
+
+    table{width:100%; border-collapse:collapse; overflow:hidden; border-radius:14px}
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid var(--border);
+      text-align:left;
+      font-size:13px;
+      vertical-align:top;
+    }
+    th{color:var(--muted); font-size:12px; letter-spacing:.02em}
+    tr:hover td{background:rgba(255,255,255,.02)}
+    .pnl.pos{color:var(--ok); font-weight:800}
+    .pnl.neg{color:var(--danger); font-weight:800}
+    .small{font-size:12px; color:var(--muted)}
+    .right{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap}
+    .hidden{display:none !important}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Mon Journal Pro Trading</h1>
+        <div class="sub">Ajoute tes trades • Analyse • Exporte en CSV (sauvegarde locale)</div>
+      </div>
+    </div>
+    <nav>
+      <button class="tab active" data-view="dashboard">Dashboard</button>
+      <button class="tab" data-view="add">Ajouter un trade</button>
+      <button class="tab" data-view="journal">Journal</button>
+      <button class="tab" data-view="settings">Export / Sauvegarde</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- DASHBOARD -->
+  <section id="view-dashboard" class="grid">
+    <div class="card">
+      <h2>Résumé performance</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="label">Trades</div><div class="value" id="kpiTrades">0</div></div>
+        <div class="kpi"><div class="label">Winrate</div><div class="value" id="kpiWinrate">0%</div></div>
+        <div class="kpi"><div class="label">P&L total</div><div class="value" id="kpiPnl">0</div></div>
+        <div class="kpi"><div class="label">Profit factor</div><div class="value" id="kpiPF">—</div></div>
+      </div>
+      <div style="margin-top:10px" class="hint">
+        Astuce : saisis ton <b>risque (R)</b> et ton <b>résultat</b> en monnaie (ou en R) pour suivre ta régularité.
+      </div>
+    </div>
+
+    <div class="
